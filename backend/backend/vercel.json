@@ -6,6 +6,12 @@
             "runtime": "vercel-php@0.6.0"
         }
     },
+    "builds": [
+        {
+            "src": "public/index.php",
+            "use": "@vercel/php"
+        }
+    ],
     "routes": [
         {
             "src": "/(.*)",
