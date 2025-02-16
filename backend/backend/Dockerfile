@@ -8,13 +8,16 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip
+    unzip \
+    libzip-dev \
+    nodejs \
+    npm
 
 # Очистка кеша
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Установка PHP расширений
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Установка Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -22,11 +25,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Установка рабочей директории
 WORKDIR /var/www
 
-# Копирование файлов проекта
-COPY . /var/www
+# Копирование composer.json и composer.lock
+COPY composer.json composer.lock ./
 
-# Установка зависимостей
-RUN composer install --no-interaction --no-dev --optimize-autoloader
+# Установка зависимостей composer
+RUN composer install --no-scripts --no-autoloader --no-dev
+
+# Копирование остальных файлов проекта
+COPY . .
+
+# Генерация автозагрузчика и оптимизация
+RUN composer dump-autoload --optimize
 
 # Установка прав на директории
 RUN chmod -R 777 storage bootstrap/cache
