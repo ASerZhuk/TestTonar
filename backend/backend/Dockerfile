@@ -25,8 +25,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Установка рабочей директории
 WORKDIR /var/www
 
-# Копирование composer.json и composer.lock
-COPY composer.json composer.lock ./
+# Копирование composer.json
+COPY composer.json ./
 
 # Установка зависимостей composer
 RUN composer install --no-scripts --no-autoloader --no-dev
