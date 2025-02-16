@@ -1,0 +1,38 @@
+FROM php:8.2-fpm
+
+# Установка системных зависимостей
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip
+
+# Очистка кеша
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Установка PHP расширений
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# Установка Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Установка рабочей директории
+WORKDIR /var/www
+
+# Копирование файлов проекта
+COPY . /var/www
+
+# Установка зависимостей
+RUN composer install --no-interaction --no-dev --optimize-autoloader
+
+# Установка прав на директории
+RUN chmod -R 777 storage bootstrap/cache
+
+# Expose port 8000
+EXPOSE 8000
+
+# Запуск Laravel
+CMD php artisan serve --host=0.0.0.0 --port=8000 
