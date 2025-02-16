@@ -28,8 +28,11 @@ WORKDIR /var/www
 # Копирование всех файлов проекта
 COPY . .
 
-# Установка зависимостей composer
-RUN composer install --no-interaction --no-dev
+# Показать содержимое директории для отладки
+RUN ls -la
+
+# Установка зависимостей composer с выводом подробной информации
+RUN composer install --no-interaction --no-dev -v
 
 # Установка прав на директории
 RUN chmod -R 777 storage bootstrap/cache
