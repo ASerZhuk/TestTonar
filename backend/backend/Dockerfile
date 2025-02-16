@@ -25,17 +25,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Установка рабочей директории
 WORKDIR /var/www
 
-# Копирование composer.json
-COPY composer.json ./
-
-# Установка зависимостей composer
-RUN composer install --no-scripts --no-autoloader --no-dev
-
-# Копирование остальных файлов проекта
+# Копирование всех файлов проекта
 COPY . .
 
-# Генерация автозагрузчика и оптимизация
-RUN composer dump-autoload --optimize
+# Установка зависимостей composer
+RUN composer install --no-interaction --no-dev
 
 # Установка прав на директории
 RUN chmod -R 777 storage bootstrap/cache
