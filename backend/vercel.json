@@ -3,7 +3,7 @@
     "framework": null,
     "functions": {
         "api/*.php": {
-            "runtime": "vercel-php@0.5.2"
+            "runtime": "vercel-php@0.4.0"
         }
     },
     "routes": [{ "src": "/(.*)", "dest": "/api/index.php" }],
@@ -22,5 +22,15 @@
         "SESSION_DRIVER": "cookie",
         "SSR_TEMP_PATH": "/tmp/ssr",
         "NODE_PATH": "node"
-    }
+    },
+    "builds": [
+        {
+            "src": "api/index.php",
+            "use": "@vercel/php"
+        },
+        {
+            "src": "public/**",
+            "use": "@vercel/static"
+        }
+    ]
 }
