@@ -19,7 +19,7 @@ export default function App() {
 
 	useEffect(() => {
 		axios
-			.get('http://127.0.0.1:8000/api/departaments')
+			.get(`${import.meta.env.VITE_API_URL}/api/departaments`)
 			.then(response => {
 				const allData = response.data
 				const dir = allData.filter(
@@ -45,11 +45,17 @@ export default function App() {
 
 			let url
 			if (data.type === 'department') {
-				url = `http://127.0.0.1:8000/api/departaments/${data.departmentId}/sotrudniks`
+				url = `${import.meta.env.VITE_API_URL}/api/departaments/${
+					data.departmentId
+				}/sotrudniks`
 			} else if (data.type === 'otdel') {
-				url = `http://127.0.0.1:8000/api/departaments/${data.departmentId}/otdels/${data.otdelId}/sotrudniks`
+				url = `${import.meta.env.VITE_API_URL}/api/departaments/${
+					data.departmentId
+				}/otdels/${data.otdelId}/sotrudniks`
 			} else if (data.type === 'subotdel') {
-				url = `http://127.0.0.1:8000/api/departaments/${data.departmentId}/otdels/${data.otdelId}/sub-otdels/${data.subOtdelId}/sotrudniks`
+				url = `${import.meta.env.VITE_API_URL}/api/departaments/${
+					data.departmentId
+				}/otdels/${data.otdelId}/sub-otdels/${data.subOtdelId}/sotrudniks`
 			}
 
 			const response = await axios.get(url)
@@ -71,7 +77,9 @@ export default function App() {
 				}
 
 				const otdelsResponse = await axios.get(
-					`http://127.0.0.1:8000/api/departaments/${department.id}/otdels`
+					`${import.meta.env.VITE_API_URL}/api/departaments/${
+						department.id
+					}/otdels`
 				)
 
 				setSelectedDepartment(department)
@@ -84,7 +92,9 @@ export default function App() {
 					const otdelsWithSubotdels = await Promise.all(
 						otdelsResponse.data.map(async otdel => {
 							const subotdelsResponse = await axios.get(
-								`http://127.0.0.1:8000/api/departaments/${department.id}/otdels/${otdel.id}/sub-otdels`
+								`${import.meta.env.VITE_API_URL}/api/departaments/${
+									department.id
+								}/otdels/${otdel.id}/sub-otdels`
 							)
 							return {
 								...otdel,
