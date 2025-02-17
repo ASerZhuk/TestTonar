@@ -18,21 +18,22 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath
 
 # Установка Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.6.5 /usr/bin/composer /usr/bin/composer
 
 # Установка рабочей директории
 WORKDIR /var/www
 
-# Копирование всего проекта
+# Копирование composer файлов
+COPY composer.json composer.lock ./
+
+# Установка зависимостей
+RUN composer install --no-dev --no-scripts --no-autoloader
+
+# Копирование остальных файлов проекта
 COPY . .
 
-# Создание директорий если их нет
-RUN mkdir -p storage/framework/{sessions,views,cache} \
-    && mkdir -p storage/logs \
-    && mkdir -p bootstrap/cache
-
-# Установка зависимостей с игнорированием ошибок платформы
-RUN composer install --no-dev --ignore-platform-reqs
+# Генерация автозагрузчика
+RUN composer dump-autoload --optimize
 
 # Установка прав на директории
 RUN chmod -R 777 storage bootstrap/cache
