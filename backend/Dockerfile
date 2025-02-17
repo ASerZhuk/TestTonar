@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.4-fpm
 
 # Установка системных зависимостей
 RUN apt-get update && apt-get install -y \
@@ -38,8 +38,6 @@ RUN composer dump-autoload --optimize
 # Установка прав на директории
 RUN chmod -R 777 storage bootstrap/cache
 
-# Expose port 8000
 EXPOSE 8000
 
-# Запуск Laravel
 CMD php artisan serve --host=0.0.0.0 --port=8000 
