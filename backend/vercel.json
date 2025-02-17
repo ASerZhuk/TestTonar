@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "framework": null,
+    "functions": {
+        "api/*.php": {
+            "runtime": "vercel-php@0.5.2"
+        }
+    },
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "/api/index.php"
+        }
+    ],
+    "env": {
+        "APP_NAME": "Laravel",
+        "APP_ENV": "production",
+        "APP_DEBUG": "true",
+        "APP_KEY": "base64:q+YooI/kstt08cWbLEW7eieIoMT+LNomx5IJtnrfLE8=",
+        "DB_CONNECTION": "pgsql",
+        "DB_HOST": "37.228.116.187",
+        "DB_PORT": "5432",
+        "DB_DATABASE": "Test_Tonar",
+        "DB_USERNAME": "andy",
+        "DB_PASSWORD": "G00dW1nn",
+        "CACHE_DRIVER": "array",
+        "LOG_CHANNEL": "stderr",
+        "SESSION_DRIVER": "array"
+    }
+}
